@@ -3,13 +3,13 @@ import asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import async_session_factory
-from app.models import Unit
+from app.models import ServiceCUnit
 
 
 async def generate_units(session: AsyncSession):
     unit_names = ("Первый", "Второй", "Третий", "Четвёртый", "Пятый")
     for name in unit_names:
-        unit = Unit(name=name)
+        unit = ServiceCUnit(name=name)
         session.add(unit)
         await session.commit()
 

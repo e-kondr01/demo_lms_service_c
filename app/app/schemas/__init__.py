@@ -3,6 +3,6 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class UnitSchema(BaseModel):
+class ServiceCUnitSchema(BaseModel):
     id: UUID
     name: str

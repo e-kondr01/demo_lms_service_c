@@ -5,8 +5,8 @@ from fastapi_sqlalchemy_toolkit import comma_list_query, get_comma_list_values
 from sqlalchemy import select
 
 from app.api.deps import Session
-from app.models import Unit
-from app.schemas import UnitSchema
+from app.models import ServiceCUnit
+from app.schemas import ServiceCUnitSchema
 
 router = APIRouter()
 
@@ -17,12 +17,14 @@ async def get_units(
     ids: comma_list_query,
     name: str | None = None,
     limit: int = 20,
-) -> list[UnitSchema]:
+) -> list[ServiceCUnitSchema]:
     stmt = (
-        select(Unit).where(Unit.id.in_(get_comma_list_values(ids, UUID))).limit(limit)
+        select(ServiceCUnit)
+        .where(ServiceCUnit.id.in_(get_comma_list_values(ids, UUID)))
+        .limit(limit)
     )
     if name:
-        stmt = stmt.where(Unit.name.icontains(f"%{name}%"))
+        stmt = stmt.where(ServiceCUnit.name.icontains(f"%{name}%"))
     return (await session.execute(stmt)).scalars().all()  # type: ignore
 
 
@@ -35,7 +37,7 @@ async def get_unit_ids(
     ids_list = get_comma_list_values(ids, UUID)
     if not ids:
         return ids_list
-    stmt = select(Unit.id).where(Unit.id.in_(ids_list))
+    stmt = select(ServiceCUnit.id).where(ServiceCUnit.id.in_(ids_list))
     if name:
-        stmt = stmt.where(Unit.name.icontains(f"%{name}%"))
+        stmt = stmt.where(ServiceCUnit.name.icontains(f"%{name}%"))
     return (await session.execute(stmt)).scalars().all()  # type: ignore
