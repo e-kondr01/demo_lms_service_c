@@ -7,8 +7,8 @@ from app.models import ServiceCUnit
 
 
 async def generate_units(session: AsyncSession):
-    unit_names = ("Первый", "Второй", "Третий", "Четвёртый", "Пятый")
-    for name in unit_names:
+    for i in range(1, 101):
+        name = f"Задание {i}"
         unit = ServiceCUnit(name=name)
         session.add(unit)
         await session.commit()
