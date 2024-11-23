@@ -33,7 +33,7 @@ async def get_unit_ids(session: Session, in_obj: UnitIDRequestBodySchema) -> lis
     ids_list = get_comma_list_values(in_obj.ids, UUID)
     if not in_obj.ids or not in_obj.name:
         return ids_list
-    stmt = select(ServiceCUnit.id)
+    stmt = select(ServiceCUnit.id).order_by(ServiceCUnit.created_at)
     if in_obj.ids:
         stmt = stmt.where(ServiceCUnit.id.in_(ids_list))
     if in_obj.name:
