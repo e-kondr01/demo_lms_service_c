@@ -31,7 +31,7 @@ async def get_units(
 @router.post("/ids")
 async def get_unit_ids(session: Session, in_obj: UnitIDRequestBodySchema) -> list[UUID]:
     ids_list = get_comma_list_values(in_obj.ids, UUID)
-    if not in_obj.ids or not in_obj.name:
+    if not in_obj.ids and not in_obj.name:
         return ids_list
     stmt = select(ServiceCUnit.id).order_by(ServiceCUnit.created_at)
     if in_obj.ids:
