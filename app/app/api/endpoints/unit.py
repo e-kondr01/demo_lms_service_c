@@ -14,17 +14,15 @@ router = APIRouter()
 @router.get("")
 async def get_units(
     session: Session,
-    ids: comma_list_query,
+    ids: comma_list_query | None = None,
     name: str | None = None,
     limit: int = 20,
 ) -> list[ServiceCUnitSchema]:
-    stmt = (
-        select(ServiceCUnit)
-        .where(ServiceCUnit.id.in_(get_comma_list_values(ids, UUID)))
-        .limit(limit)
-    )
+    stmt = select(ServiceCUnit).limit(limit)
     if name:
         stmt = stmt.where(ServiceCUnit.name.icontains(f"%{name}%"))
+    if ids:
+        stmt = stmt.where(ServiceCUnit.id.in_(get_comma_list_values(ids, UUID)))
     return (await session.execute(stmt)).scalars().all()  # type: ignore
 
 
