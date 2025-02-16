@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   fastapi:
-    container_name: service_b
+    container_name: service_c
     expose:
       - 8000
     build: ./app
